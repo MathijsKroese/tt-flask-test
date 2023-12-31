@@ -51,7 +51,7 @@ EXPOSE 8000
 
 
 # Run the application.
-CMD . /venv/bin/activate && gunicorn -w 4 -b 0.0.0.0:8000 app:app
+CMD . /venv/bin/activate && gunicorn -w 4 -b 0.0.0.0:8080 app:app
 
 
 
