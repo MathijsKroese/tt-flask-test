@@ -5,7 +5,13 @@ from app.main import create_app, db
 from app.main.model import orderline, order
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+@app.route('/')
+def main():
+    return "something"
 
+if __name__ == "__main__":
+    print('something with docker')
+    app.run(host="0.0.0.0", port=8000, debug=False, use_reloader=True)
 
 app.register_blueprint(blueprint)
 
