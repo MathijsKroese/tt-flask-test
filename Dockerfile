@@ -18,7 +18,7 @@ ENV PYTHONUNBUFFERED=1
 RUN python3 -m venv /venv
 ENV PATH=/venv/bin:$PATH
 
-WORKDIR /app
+WORKDIR /app/main
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
