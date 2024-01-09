@@ -3,21 +3,24 @@ from flask_migrate import Migrate
 from app import blueprint
 from app.main import create_app, db
 from app.main.model import orderline, order
+from app.main.service import orderline_service
 
-app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
-@app.route('/')
-def main():
-    return "something"
+# app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 
-if __name__ == "__main__":
-    print('something with docker')
-    app.run(host="0.0.0.0", port=8000, debug=False, use_reloader=True)
-
-app.register_blueprint(blueprint)
-
-app.app_context().push()
-
-migrate = Migrate(app, db)
+#
+# @app.route('/')
+# def main():
+#     return orderline_service.get_all_orderlines()
+#
+#
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=8080, debug=True, use_reloader=True)
+#
+# app.register_blueprint(blueprint)
+#
+# app.app_context().push()
+#
+# migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():

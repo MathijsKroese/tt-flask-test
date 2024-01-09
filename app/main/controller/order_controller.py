@@ -1,27 +1,36 @@
 from flask import request
-from app.main.model.order import OrderDTO
-from app.main.service import order_service as _os
 from flask_restx import Resource
+from ..service import order_service as _os
+from ..dto.order import OrderDTO
+
 
 api = OrderDTO.api
-new_dto = OrderDTO.as_dto()
+_request_dto = OrderDTO.request_model
+_response_dto = OrderDTO.response_model
 
-
-@api.route('/orderline/<orderline_id>')
-class OrderByOrderline(Resource):
-    @api.marshal_list_with(new_dto, envelope="orders")
-    def get(self, orderline_id):
-        return _os.get_orders_by_orderline(orderline_id)
-
-    @api.expect(new_dto)
-    @api.response(201, "order created")
-    def post(self, orderline_id):
-        data = request.json
-        return _os.assign_to_orderline(orderline_id, data)
+@api.route('/')
+class GetAl(Resource):
+    @api.response(200, "success")
+    @api.marshal_list_with(_response_dto, envelope="orders")
+    def get(self):
+        return _os.get_all_orders()
 
 
 @api.route('/<order_code>')
-class OrderByCode(Resource):
-    @api.marshal_list_with(new_dto, envelope="orders")
+class OrderByOrderline(Resource):
+    # @api.response(200, "success")
+    @api.marshal_list_with(_response_dto, envelope="orders")
+    def get(self, order_code):
+        return _os.get_by_order_code(order_code)
+
+    @api.expect(_request_dto)
+    @api.marshal_list_with(_response_dto, envelope="orders")
+    # @api.response(201, "order created")
+    def post(self, order_code):
+        data = request.json
+        return _os.add_new_order(data=data, order_code=order_code)
+
+    # @api.param("order_code", "The identifier code to be retrieved")
+    @api.marshal_list_with(_response_dto, envelope="orders")
     def get(self, order_code):
         return _os.get_by_order_code(order_code)
